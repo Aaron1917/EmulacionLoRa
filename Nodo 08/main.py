@@ -1,35 +1,50 @@
 from network import LoRa
+import os
 import socket
 import time
+import utime
 import ubinascii
 import binascii
 import pycom
 import struct
-import math as m
 
 from pysense import Pysense
 from SI7006A20 import SI7006A20 
 from MPL3115A2 import MPL3115A2, ALTITUDE, PRESSURE
 
+# La siguiente funcion crea un numero entero de 4 bytes de manera 'aleatorea'
+# El número puede estar contenido dentro de un rango especificado (4294967295)
+def randint(min = 0, max = 2147483647):
+    diff = max - min
+    val = 0
+    while (val == 0):
+        val = struct.unpack('I', os.urandom(4))[0]
+    num = val % diff
+    return int(num + min)
+
+
+def sensores():
+     temperature = int(si.temperature()*100)
+     humidity = int(si.humidity()*100)
+     pressure = int(mpPress.pressure()/10)
+     print('Temperature:', temperature/100 )
+     print('Humidity:', humidity/100)
+     print('Pressure:', pressure/10)
+     data = bytearray(struct.pack('h',temperature)+struct.pack('h',humidity)+struct.pack('h',pressure))
+     return data
+
 py = Pysense()
 si = SI7006A20(py)
 mpPress = MPL3115A2(py,mode=PRESSURE)
 
-# Se deshabilita el led que prende y apaga en azul
 pycom.heartbeat(False)
 
-# Se inicializa LoRa en el modo LoRaWAN y se selecciona la frecuencia
-# correspondiente a Uruguay
-
 lora = LoRa(mode=LoRa.LORAWAN, region=LoRa.US915)
-
-# create an OTAA authentication parameters, change them to the provided credentials
 
 app_eui = ubinascii.unhexlify('0000000000000008')
 dev_eui = ubinascii.unhexlify('114AA912F8BC882A')
 app_key = ubinascii.unhexlify('57769376BB66E9B358F016A4DE5CBE74')
 
-#Se eliminan los canales del 0 al 72
 for i in range(0,8):
      lora.remove_channel(i)
 for i in range(16,65):
@@ -37,74 +52,54 @@ for i in range(16,65):
 for i in range(66,72):
      lora.remove_channel(i)
 
-# Se configura la conexión con la red OTA
 lora.join(activation=LoRa.OTAA, auth=(dev_eui, app_eui, app_key), timeout=0)
 
-# Esperamos a que el nodo se una a la red
 while not lora.has_joined():
-    pycom.rgbled(0x0A0A08) # white
+    pycom.rgbled(0x0A0A08)
     time.sleep(2.5)
     print('Not yet joined...')
 
-# El nodo se une a la red y se prende el led en verde
-
 print('Joined LoRa network')
-pycom.rgbled(0x00CC00) # green
+pycom.rgbled(0x00CC00)
 
-# Se crea el socket LoRa
 s = socket.socket(socket.AF_LORA, socket.SOCK_RAW)
-
-# Se configura la tasa de transmisión de datos de LoRa
-
-s.setsockopt(socket.SOL_LORA, socket.SO_DR, 3)
-
-# Se inicializa la variable contador que cuenta la cantidad de paquetes enviados
+s.setsockopt(socket.SOL_LORA, socket.SO_DR, 1)
 
 contador = 0
+data = ''
 
-#Inicia un loop en el que se envía información cada un tiempo determinado
+total_time = 1800 # 30m * 60s
+total_msg = 15 # 15 mensajes
+tpm = int((total_time/total_msg)*1000)  # 120,000 ms 
+# 30 min/15 msj
 
 while True:
+     wait = randint(0, tpm - 8000)
+     # print('Los ms son:')
+     # print(wait)
+     utime.sleep_ms(wait)
 
-    # se configura el socket para que se bloquee (que espere que se mande la información
-     # y luego las dos ventanas de recepción - Clase A)
-     
      s.setblocking(True)
-
-     # se prende el led en rosa indicando que se está enviando la información
-     
-     pycom.rgbled(0xFF3399) #pink
-
-     #se guarda en las variables temperature, humidity y pressure las coordenadas obtenidas por el nodo
-     
-     temperature = int(si.temperature()*100)
-     humidity = int(si.humidity()*100)
-     pressure = int(mpPress.pressure()/10)
-
-     #el contador suma un paquete
-     
-     contador = (contador + 1)
-
-     print('Temperature:', temperature/100 )
-     print('Humidity:', humidity/100)
-     print('Pressure:', pressure/10)
+     pycom.rgbled(0xFF3399)
+     start_time = utime.ticks_ms()
+     contador += 1
      print('Numero de paquete', contador)
+     data = bytearray(struct.pack('h', contador))
 
-     # se guardan las variables temperature, humidity, pressure y contador en una variable data como un bytearray
-     data = bytearray(struct.pack('h',temperature)+struct.pack('h',humidity)+struct.pack('h',pressure)+struct.pack('h',contador))
-
+     data2 = sensores()
+     data += data2
      print('Sending data (uplink)...')
 
-     # envía la información
      s.send(data)
-
-     # desbloquea el socket
      s.setblocking(False)
-
      print('Data Sent: ', data)
+     pycom.rgbled(0x00CC00) 
 
-     # Entra en modo sleep por 20 segundos y el led se pone en verde, luego vuelve a comenzar el loop
-     
-     pycom.rgbled(0x00CC00) # green
-     time.sleep(6)
+     end_time = utime.ticks_ms()
+     exe_time = utime.ticks_diff(end_time, start_time)
+     print('El tiempo de ejecucion: ')
+     print(exe_time)
 
+     time.sleep(1)
+     if tpm-wait-exe_time > 0:
+          utime.sleep_ms(tpm-wait-exe_time)

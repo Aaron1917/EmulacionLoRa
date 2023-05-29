@@ -4,6 +4,7 @@ import socket
 import time
 import utime
 import ubinascii
+import binascii
 import pycom
 import struct
 
@@ -41,6 +42,7 @@ pycom.heartbeat(False)
 
 # Inicializar LoRa en modo LORAWAN.
 # Escogemos la region de nuestro dispositivo:
+# lora = LoRa(mode=LoRa.LORAWAN, region=LoRa.US915)
 lora = LoRa(mode=LoRa.LORAWAN, region=LoRa.US915)
 
 # Creamos los parámetros de autentificación OTAA.
@@ -72,21 +74,19 @@ pycom.rgbled(0x00CC00) # verde
 s = socket.socket(socket.AF_LORA, socket.SOCK_RAW)
 
 # Establecemos el LoRa Spreading Factor (SF) y bandwidth (BW)
-# SF10BW125
-# SF9BW125
-# SF80BW125
-# SF70BW125
-# SF8BW500
+# DR0     SF10BW125
+# DR1     SF9BW125
+# DR2     SF80BW125
+# DR3     SF70BW125
+# DR4     SF8BW500
 s.setsockopt(socket.SOL_LORA, socket.SO_DR, 1)
 # s.setsockopt(socket.SOL_LORA, socket.SO_POWER, 14) # 14 dBm
 
 contador = 0
 data = ''
-# data2 = ''
-# start_time = utime.ticks_ms()
 
 total_time = 1800 # 30m * 60s
-total_msg = 15
+total_msg = 15 # 15 mensajes
 tpm = int((total_time/total_msg)*1000)  # 120,000 ms 
 # 30 min/15 msj
 
@@ -97,8 +97,8 @@ while True:
      print('Los ms son:')
      print(wait)
      utime.sleep_ms(wait)
-     # make the socket blocking
-     # (waits for the data to be sent and for the 2 receive windows to expire)
+     # Se bloquea el socket 
+     # (Se espera a que se envien los datos y que caduquen las 2 ventanas de recepción)
      s.setblocking(True)
      pycom.rgbled(0xFF3399) # rosa
      # Cronometreamos el tiempo 
@@ -106,15 +106,15 @@ while True:
      # envio de datos
      contador += 1
      print('Numero de paquete', contador)
-     data = bytearray(struct.pack('h', contador))
+     data = bytearray(struct.pack('h', contador)) # B
 
      data2 = sensores()
      data += data2
      print('Sending data (uplink)...')
      # envio de datos
      s.send(data)
-     # make the socket non-blocking
-     # (because if there's no data received it will block forever...)
+     # Se desactiva el bloqueo del socket
+     # (Si no se desactiva se puede bloquear para siempre...)
      s.setblocking(False)
      print('Data Sent: ', data)
      pycom.rgbled(0x00CC00) # verde
