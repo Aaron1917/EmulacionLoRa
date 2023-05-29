@@ -14,4 +14,5 @@ Este proyecto pretende emular diferentes nodos LoRa en una red con dispositivos 
  - 1000 nodos
  - 1500 nodos
  - 2000 nodos
+ 
 En esta primera parte unicamente se aborda el contenido para 32 dispositivos que trabajan bajo las condiciones anteriormente especificadas y que para este primer caso pretende emular 500 nodos.
