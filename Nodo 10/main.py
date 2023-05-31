@@ -86,9 +86,8 @@ contador = 0
 data = ''
 
 total_time = 1800 # 30m * 60s
-total_msg = 32 # 32 mensajes
-tpm = int((total_time/total_msg)*1000)  # 120,000 ms 
-# 30 min/15 msj
+total_msg = 48
+tpm = int((total_time/total_msg)*1000)
 
 while True:
      # Calculamos un número aleatoreo entre 0 y el maximo en ms de tiempo
