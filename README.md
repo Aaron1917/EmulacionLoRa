@@ -15,4 +15,4 @@ Este proyecto pretende emular diferentes nodos LoRa en una red con dispositivos 
  - 1500 nodos
  - 2000 nodos
  
-En esta segunda parte unicamente se aborda el contenido para 32 dispositivos que trabajan bajo las condiciones anteriormente especificadas y que para este primer caso pretende emular **1000** nodos por lo tanto la carga de cada dispositivo es enviar 32 paquetes cada 30 minutos.
+En esta segunda parte unicamente se aborda el contenido para **32** dispositivos que trabajan bajo las condiciones anteriormente especificadas y que para este tercer caso pretende emular **1500** nodos por lo tanto la carga de cada dispositivo a enviar es de **47** paquetes cada 30 minuto. Dejando un pequeño porcentaje extra para compensar la pérdida de tiempo en el procesamiento de cada nodo.
