@@ -70,7 +70,7 @@ contador = 0
 data = ''
 
 total_time = 1800 # 30m * 60s
-total_msg = 48
+total_msg = 64
 tpm = int((total_time/total_msg)*1000)
 
 while True:
