@@ -1,0 +1,671 @@
+[
+    {
+        "id": "4e8d372461e5abc3",
+        "type": "tab",
+        "label": "Test Manager",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "bb5d016d558b712b",
+        "type": "ui_text",
+        "z": "4e8d372461e5abc3",
+        "group": "5fd42aabe658163d",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Total de paquetes enviados",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 800,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "4cf47bd9e5a1e3ad",
+        "type": "ui_text",
+        "z": "4e8d372461e5abc3",
+        "group": "5fd42aabe658163d",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Total de paquetes recibidos",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 800,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "bb3dfac45594f3d4",
+        "type": "ui_gauge",
+        "z": "4e8d372461e5abc3",
+        "name": "",
+        "group": "5fd42aabe658163d",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "gtype": "donut",
+        "title": "Eficiencia",
+        "label": "%",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#ff2414",
+            "#e6e600",
+            "#27b300"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 740,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "c6eb3f7f58db9c89",
+        "type": "ui_switch",
+        "z": "4e8d372461e5abc3",
+        "name": "",
+        "label": "Inicio",
+        "tooltip": "",
+        "group": "59b6cb18c88a6043",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "green",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "red",
+        "animate": true,
+        "className": "",
+        "x": 190,
+        "y": 80,
+        "wires": [
+            [
+                "200291a0cc1b6967"
+            ]
+        ]
+    },
+    {
+        "id": "200291a0cc1b6967",
+        "type": "function",
+        "z": "4e8d372461e5abc3",
+        "name": "Global switch",
+        "func": "global.set(\"ACTION\", msg.payload)\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 80,
+        "wires": [
+            [
+                "572502c9edf2153e"
+            ]
+        ]
+    },
+    {
+        "id": "572502c9edf2153e",
+        "type": "debug",
+        "z": "4e8d372461e5abc3",
+        "name": "switch",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 610,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "29f33952dbeaa884",
+        "type": "inject",
+        "z": "4e8d372461e5abc3",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "0.5",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 250,
+        "y": 320,
+        "wires": [
+            [
+                "8020cd254a49cbfa",
+                "722b5438ed5627ec"
+            ]
+        ]
+    },
+    {
+        "id": "8020cd254a49cbfa",
+        "type": "function",
+        "z": "4e8d372461e5abc3",
+        "name": "Global variables",
+        "func": "function suma_recibidos(){\n    // Obtener las variables de numero de paquetes recibidos\n    var variables = [\n        global.get(\"N01\") || 0,\n        global.get(\"N02\") || 0,\n        global.get(\"N03\") || 0,\n        global.get(\"N04\") || 0,\n        global.get(\"N05\") || 0,\n        global.get(\"N06\") || 0,\n        global.get(\"N07\") || 0,\n        global.get(\"N08\") || 0,\n        global.get(\"N09\") || 0,\n        global.get(\"N10\") || 0,\n        global.get(\"N11\") || 0,\n        global.get(\"N12\") || 0,\n        global.get(\"N13\") || 0,\n        global.get(\"N14\") || 0,\n        global.get(\"N15\") || 0,\n        global.get(\"N16\") || 0,\n        global.get(\"N17\") || 0,\n        global.get(\"N18\") || 0,\n        global.get(\"N19\") || 0,\n        global.get(\"N20\") || 0,\n        global.get(\"N21\") || 0,\n        global.get(\"N22\") || 0,\n        global.get(\"N23\") || 0,\n        global.get(\"N24\") || 0,\n        global.get(\"N25\") || 0,\n        global.get(\"N26\") || 0,\n        global.get(\"N27\") || 0,\n        global.get(\"N28\") || 0,\n        global.get(\"N29\") || 0,\n        global.get(\"N30\") || 0,\n        global.get(\"N31\") || 0,\n        global.get(\"N32\") || 0,\n        global.get(\"N33\") || 0,\n        global.get(\"N34\") || 0\n    ];\n\n    // Sumar los valores de las variables utilizando reduce\n    var suma = variables.reduce(function (acumulador, valorActual) {\n        return acumulador + valorActual;\n    }, 0);\n\n    // Devolver el resultado de la suma\n    // console.log(suma);\n    return suma;\n}\n\nfunction suma_enviados() {\n    var variables = [\n        global.get(\"eN01\") || 0,\n        global.get(\"eN02\") || 0,\n        global.get(\"eN03\") || 0,\n        global.get(\"eN04\") || 0,\n        global.get(\"eN05\") || 0,\n        global.get(\"eN06\") || 0,\n        global.get(\"eN07\") || 0,\n        global.get(\"eN08\") || 0,\n        global.get(\"eN09\") || 0,\n        global.get(\"eN10\") || 0,\n        global.get(\"eN11\") || 0,\n        global.get(\"eN12\") || 0,\n        global.get(\"eN13\") || 0,\n        global.get(\"eN14\") || 0,\n        global.get(\"eN15\") || 0,\n        global.get(\"eN16\") || 0,\n        global.get(\"eN17\") || 0,\n        global.get(\"eN18\") || 0,\n        global.get(\"eN19\") || 0,\n        global.get(\"eN20\") || 0,\n        global.get(\"eN21\") || 0,\n        global.get(\"eN22\") || 0,\n        global.get(\"eN23\") || 0,\n        global.get(\"eN24\") || 0,\n        global.get(\"eN25\") || 0,\n        global.get(\"eN26\") || 0,\n        global.get(\"eN27\") || 0,\n        global.get(\"eN28\") || 0,\n        global.get(\"eN29\") || 0,\n        global.get(\"eN30\") || 0,\n        global.get(\"eN31\") || 0,\n        global.get(\"eN32\") || 0,\n        global.get(\"eN33\") || 0,\n        global.get(\"eN34\") || 0\n    ];\n    var suma = variables.reduce(function (acumulador, valorActual) {\n        return acumulador + valorActual;\n    }, 0);\n\n    return suma;\n}\n\n//const gpr = global.get(\"GPR\") || 0;\nconst gpr = suma_enviados();\nvar gpe = suma_recibidos();\nglobal.set(\"GPE\", gpe);\nvar ge = (gpr / gpe) * 100;\n\nreturn [\n    { payload: gpe },\n    { payload: gpr },\n    { payload: Number(ge.toFixed(2)) }\n];",
+        "outputs": 3,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 480,
+        "y": 320,
+        "wires": [
+            [
+                "bb5d016d558b712b",
+                "46ff38f810a8b396"
+            ],
+            [
+                "4cf47bd9e5a1e3ad",
+                "b9053b46b990da5c"
+            ],
+            [
+                "bb3dfac45594f3d4",
+                "e522719941741650"
+            ]
+        ]
+    },
+    {
+        "id": "46ff38f810a8b396",
+        "type": "debug",
+        "z": "4e8d372461e5abc3",
+        "name": "Paquetes enviados",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 770,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "b9053b46b990da5c",
+        "type": "debug",
+        "z": "4e8d372461e5abc3",
+        "name": "Paquetes recibidos",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 770,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "e522719941741650",
+        "type": "debug",
+        "z": "4e8d372461e5abc3",
+        "name": "Eficiencia",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 740,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "22886dadee45e471",
+        "type": "ui_table",
+        "z": "4e8d372461e5abc3",
+        "group": "59b6cb18c88a6043",
+        "name": "Registro",
+        "order": 3,
+        "width": 6,
+        "height": 5,
+        "columns": [
+            {
+                "field": "Tiempo",
+                "title": "T",
+                "width": "12",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "Enviados",
+                "title": "Enviados",
+                "width": "",
+                "align": "center",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "Recibidos",
+                "title": "Recibidos",
+                "width": "",
+                "align": "center",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "Eficiencia",
+                "title": "Eficiencia",
+                "width": "",
+                "align": "center",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            }
+        ],
+        "outputs": 0,
+        "cts": false,
+        "x": 820,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "cf314436e565d7e0",
+        "type": "ui_switch",
+        "z": "4e8d372461e5abc3",
+        "name": "",
+        "label": "Fin",
+        "tooltip": "",
+        "group": "59b6cb18c88a6043",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "check",
+        "oncolor": "green",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "close",
+        "offcolor": "red",
+        "animate": true,
+        "className": "",
+        "x": 190,
+        "y": 140,
+        "wires": [
+            [
+                "7cc6a1dcd503738b"
+            ]
+        ]
+    },
+    {
+        "id": "7cc6a1dcd503738b",
+        "type": "function",
+        "z": "4e8d372461e5abc3",
+        "name": "Fin de captura",
+        "func": "global.set(\"Captura\", msg.payload)\nreturn null;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 140,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d7e200aa4adf0629",
+        "type": "debug",
+        "z": "4e8d372461e5abc3",
+        "name": "Tabla debug",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 830,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "722b5438ed5627ec",
+        "type": "function",
+        "z": "4e8d372461e5abc3",
+        "name": "Tabla",
+        "func": "\nif (global.get(\"ACTION\")) {\n    if (global.get(\"start_time\") === undefined || global.get(\"start_time\") === null) {\n        global.set(\"start_time\", msg.payload);\n        \n    }\n    var st = global.get(\"start_time\");\n    var dif = msg.payload - st;\n    // Código de la función en Node-RED\n    var tableData = global.get(\"tableData\") || [];\n    var tiempo = global.get(\"t\") || 5;\n\n    if (dif >= tiempo * 60 * 1000 && !global.get(\"Captura\")) {\n        // global.set(\"start_time\", msg.payload);\n        global.set(\"t\", tiempo + 5);\n        var tiempo = tiempo;\n        var gpr = global.get(\"GPR\") || 0;\n        var gpe = global.get(\"GPE\") || 0;\n        var ge = (gpr / gpe) * 100;\n        ge = ge.toFixed(2);\n\n        // Crear una nueva fila con los valores actuales\n        var newRow = { Tiempo: tiempo, Enviados: gpe, Recibidos: gpr, Eficiencia: ge };\n\n        // Agregar la nueva fila a los datos de la tabla\n        tableData.push(newRow);\n\n        // Actualizar los datos en la variable global\n        global.set(\"tableData\", tableData);\n\n        // Enviar los datos actualizados a la UI-Table\n        msg.payload = tableData;\n        return [\n            { payload: tableData },\n            { payload: dif }\n        ];\n    }\n    else{\n        return [\n            { payload: tableData },\n            { payload: dif }\n        ];\n    }\n}\nreturn null;",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 220,
+        "wires": [
+            [
+                "22886dadee45e471",
+                "d7e200aa4adf0629"
+            ],
+            [
+                "683c8da3ac84cf24"
+            ]
+        ]
+    },
+    {
+        "id": "683c8da3ac84cf24",
+        "type": "debug",
+        "z": "4e8d372461e5abc3",
+        "name": "Dif debug",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 820,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "287864e77eaf7230",
+        "type": "csv",
+        "z": "4e8d372461e5abc3",
+        "name": "",
+        "sep": ",",
+        "hdrin": "",
+        "hdrout": "none",
+        "multi": "one",
+        "ret": "\\r\\n",
+        "temp": "",
+        "skip": "90",
+        "strings": true,
+        "include_empty_strings": "",
+        "include_null_values": "",
+        "x": 290,
+        "y": 500,
+        "wires": [
+            [
+                "2655170ad2f6cc53",
+                "315d66228219d473"
+            ]
+        ]
+    },
+    {
+        "id": "2655170ad2f6cc53",
+        "type": "debug",
+        "z": "4e8d372461e5abc3",
+        "name": "debug 1",
+        "active": false,
+        "tosidebar": true,
+        "console": true,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 510,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "4aa68c76ef62d6ca",
+        "type": "ui_button",
+        "z": "4e8d372461e5abc3",
+        "name": "",
+        "group": "59b6cb18c88a6043",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Generar Archivo",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "tableData",
+        "payloadType": "global",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 120,
+        "y": 500,
+        "wires": [
+            [
+                "287864e77eaf7230"
+            ]
+        ]
+    },
+    {
+        "id": "315d66228219d473",
+        "type": "file",
+        "z": "4e8d372461e5abc3",
+        "name": "",
+        "filename": "/tmp/log.txt",
+        "filenameType": "str",
+        "appendNewline": false,
+        "createDir": true,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 530,
+        "y": 460,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "f31a598d.9fd2c8",
+        "type": "function",
+        "z": "4e8d372461e5abc3",
+        "name": "Set base path",
+        "func": "// restrict to /tmp/\nvar basePath = \"/tmp/\";\nvar filename = msg.req.params.fn;\n\nif (filename.includes(\"../\")) {\n    msg.payload = \"Illegal file path\";\n    msg.statusCode = 405; // not allowed\n    return [null, msg]; // fire output 2\n}\n// TODO: add more checks\n\nmsg.filename = basePath + filename;\nreturn [msg, null]; // fire output 1\n",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 300,
+        "y": 580,
+        "wires": [
+            [
+                "34dc99e5.495466"
+            ],
+            [
+                "98261154.3006"
+            ]
+        ]
+    },
+    {
+        "id": "98261154.3006",
+        "type": "http response",
+        "z": "4e8d372461e5abc3",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 650,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "34dc99e5.495466",
+        "type": "file in",
+        "z": "4e8d372461e5abc3",
+        "name": "",
+        "filename": "filename",
+        "filenameType": "msg",
+        "format": "",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 490,
+        "y": 560,
+        "wires": [
+            [
+                "98261154.3006"
+            ]
+        ]
+    },
+    {
+        "id": "38d65d59.1d8aa2",
+        "type": "catch",
+        "z": "4e8d372461e5abc3",
+        "name": "",
+        "scope": null,
+        "uncaught": false,
+        "x": 120,
+        "y": 660,
+        "wires": [
+            [
+                "3b8014a.86ad8ec",
+                "5b18a8e7.fb8da8"
+            ]
+        ]
+    },
+    {
+        "id": "3b8014a.86ad8ec",
+        "type": "function",
+        "z": "4e8d372461e5abc3",
+        "name": "Set 404",
+        "func": "msg.payload = msg.error;\nmsg.statusCode = 404;//resource not found\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 500,
+        "y": 660,
+        "wires": [
+            [
+                "98261154.3006"
+            ]
+        ]
+    },
+    {
+        "id": "5b18a8e7.fb8da8",
+        "type": "debug",
+        "z": "4e8d372461e5abc3",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 350,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "a8c2985e.d23ad8",
+        "type": "ui_template",
+        "z": "4e8d372461e5abc3",
+        "group": "59b6cb18c88a6043",
+        "name": "ui_temlplate - present download links on dashboard",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "format": "<div >\n    <a href=\"/files/log.txt\">Descargar archivo</a>\n    <!--<button ng-click=\"downloadFile('/files/log.txt')\">Descargar archivo</button>-->\n</div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": false,
+        "templateScope": "local",
+        "className": "",
+        "x": 490,
+        "y": 740,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "67ecfa7f.3f0e24",
+        "type": "http in",
+        "z": "4e8d372461e5abc3",
+        "name": "",
+        "url": "/files/:fn",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 130,
+        "y": 580,
+        "wires": [
+            [
+                "f31a598d.9fd2c8"
+            ]
+        ]
+    },
+    {
+        "id": "5fd42aabe658163d",
+        "type": "ui_group",
+        "name": "Stats",
+        "tab": "ba27174e3d36536d",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "59b6cb18c88a6043",
+        "type": "ui_group",
+        "name": "Control",
+        "tab": "ba27174e3d36536d",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "ba27174e3d36536d",
+        "type": "ui_tab",
+        "name": "Test Manager",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    }
+]
