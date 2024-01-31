@@ -27,7 +27,7 @@ Se desea conocer un caso mas experimental con **25** dispositivos que emulen **5
  * PHY Payload = 28 a 29 bytes
 
 | Spreding Factor (SF) | Time of Airtime (ToA) | 
-| --- | --- | 
+| ;---; | ;---; | 
 | 9 | 226.3 ms | 
 | 8 |123.39 ms | 
 | 7 | 66.81 ms |
@@ -39,5 +39,5 @@ Los dispositivos que emularan **1.2kbytes/hora**, del nodo **26** al nodo **34**
  * PHY Payload = 216-217 bytes
 
 | Spreding Factor (SF) | Time of Airtime (ToA) | 
-| --- | --- | 
+| ;---; | ;---; | 
 | 7 | 343.29 ms |
