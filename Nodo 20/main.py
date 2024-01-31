@@ -80,13 +80,13 @@ pycom.rgbled(0x00CC00)
 # Creamos un socket LoRa.
 s = socket.socket(socket.AF_LORA, socket.SOCK_RAW)
 
-s.setsockopt(socket.SOL_LORA, socket.SO_DR, 1)
+s.setsockopt(socket.SOL_LORA, socket.SO_DR, 3)
 
 contador = 0
 data = ''
 
-total_time = 1800 # 30m * 60s
-total_msg = 64
+total_time = 3600 # 60m * 60s
+total_msg = 21
 tpm = int((total_time/total_msg)*1000)
 
 while True:
@@ -98,7 +98,7 @@ while True:
      contador += 1
      print('Numero de paquete', contador)
      data = bytearray(struct.pack('h', contador))
-     data2 = sensores()
+     data2 = sensores() + bytearray(os.urandom(4))
      data += data2
 
      s.setblocking(True)

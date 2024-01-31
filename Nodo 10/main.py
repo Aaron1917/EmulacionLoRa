@@ -79,14 +79,14 @@ s = socket.socket(socket.AF_LORA, socket.SOCK_RAW)
 # DR2     SF80BW125
 # DR3     SF70BW125
 # DR4     SF8BW500
-s.setsockopt(socket.SOL_LORA, socket.SO_DR, 1)
+s.setsockopt(socket.SOL_LORA, socket.SO_DR, 3)
 # s.setsockopt(socket.SOL_LORA, socket.SO_POWER, 14) # 14 dBm
 
 contador = 0
 data = ''
 
-total_time = 1800 # 30m * 60s
-total_msg = 64
+total_time = 3600 # 60m * 60s
+total_msg = 21
 tpm = int((total_time/total_msg)*1000)
 
 while True:
@@ -107,7 +107,7 @@ while True:
      print('Numero de paquete', contador)
      data = bytearray(struct.pack('h', contador)) # B
 
-     data2 = sensores()
+     data2 = sensores() + bytearray(os.urandom(4))
      data += data2
      print('Sending data (uplink)...')
      # envio de datos

@@ -15,11 +15,10 @@ from pycoproc_1 import Pycoproc
 # La siguiente funcion crea un numero entero de 4 bytes de manera 'aleatorea'
 # El número puede estar contenido dentro de un rango especificado (4294967295)
 def randint(min = 0, max = 2147483647):
-    diff = max - min
     val = 0
     while (val == 0):
         val = struct.unpack('I', os.urandom(4))[0]
-    num = val % diff
+    num = val % (max - min)
     return int(num + min)
 
 
@@ -96,13 +95,14 @@ s = socket.socket(socket.AF_LORA, socket.SOCK_RAW)
 # DR2     SF80BW125
 # DR3     SF70BW125
 # DR4     SF8BW500
-s.setsockopt(socket.SOL_LORA, socket.SO_DR, 1)
+s.setsockopt(socket.SOL_LORA, socket.SO_DR, 3)
 
 contador = 0
 data = ''
 
-total_time = 1800 # 30m * 60s
-total_msg = 64
+total_time = 3600 # 60m * 60s
+total_msg = 21
+# Tiempo por mensaje 
 tpm = int((total_time/total_msg)*1000)
 
 while True:
@@ -119,7 +119,7 @@ while True:
      contador += 1
      print('Numero de paquete', contador)
      data = bytearray(struct.pack('h', contador)) # B
-     data2 = sensores()
+     data2 = sensores() + bytearray(os.urandom(4))
      data += data2
      # Se bloquea el socket 
      # (Se espera a que se envien los datos y que caduquen las 2 ventanas de recepción)
@@ -141,5 +141,4 @@ while True:
      # Tiempo por mensaje - tiempo esperado al inicio -tiempo de ejecución - 1s
      time.sleep(1)
      if tpm-wait-exe_time > 0:
-          utime.sleep_ms(tpm-wait-exe_time)
-     #El tiempo total esperado debe ser de 120,000 ms
+          utime.sleep_ms(tpm-wait-exe_time-1000)
